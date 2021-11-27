@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movieapp/src/common/constants/assets.dart';
 import 'package:movieapp/src/common/constants/strings.dart';
+import 'package:movieapp/src/models/app_config.dart';
 import 'package:movieapp/src/routes/app_routes.gr.dart';
 
 class SplashPage extends StatefulWidget {
@@ -15,12 +20,26 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
+    _setup(context);
     Future.delayed(
       const Duration(milliseconds: 1500),
       () {
         // Navigate to homepage
         context.router.replace(const HomepageRoute());
       },
+    );
+  }
+
+  Future<void> _setup(BuildContext context) async {
+    final GetIt getIt = GetIt.instance;
+    final configFile = await rootBundle.loadString('assets/config/main.json');
+    final configData = jsonDecode(configFile);
+    getIt.registerSingleton<AppConfig>(
+      AppConfig(
+        apiKey: configData["API_KEY"],
+        baseApiUrl: configData["BASE_API_URL"],
+        baseImageApiUrl: configData["BASE_IMAGE_API_URL"],
+      ),
     );
   }
 
