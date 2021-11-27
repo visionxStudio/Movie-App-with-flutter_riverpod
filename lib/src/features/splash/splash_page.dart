@@ -27,7 +27,7 @@ class _SplashPageState extends State<SplashPage> {
         const Duration(milliseconds: 1500),
         () {
           // Navigate to homepage
-          context.router.replace(const HomepageRoute());
+          context.router.replace(HomepageRoute());
         },
       );
     });

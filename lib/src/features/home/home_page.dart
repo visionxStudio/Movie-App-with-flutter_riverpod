@@ -2,15 +2,17 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:movieapp/src/common/constants/strings.dart';
+import 'package:movieapp/src/models/search_categories.dart';
 
 class Homepage extends ConsumerWidget {
   const Homepage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final double _height = MediaQuery.of(context).size.height;
     final double _width = MediaQuery.of(context).size.width;
     return Scaffold(
+      extendBody: true,
       backgroundColor: Colors.black,
       body: SizedBox(
         height: _height,
@@ -18,6 +20,11 @@ class Homepage extends ConsumerWidget {
         child: Stack(
           children: [
             _backgroundWidget(height: _height, width: _width),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: _foregroundWidgets(height: _height, width: _width),
+            ),
           ],
         ),
       ),
@@ -52,9 +59,131 @@ class Homepage extends ConsumerWidget {
   }
 
   Widget _foregroundWidgets({required double height, required double width}) {
+    return SafeArea(
+      child: SizedBox(
+        width: width,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _topbarWidget(height: height, width: width),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _topbarWidget({required double height, required double width}) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, height * 0.02, 0, 0),
-      width: width * 0.88,
+      height: height * 0.08,
+      decoration: BoxDecoration(
+        color: Colors.black54,
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          SearchFieldWidget(),
+          CategorySelectionWidget(),
+        ],
+      ),
+    );
+  }
+}
+
+class SearchFieldWidget extends ConsumerStatefulWidget {
+  const SearchFieldWidget({Key? key}) : super(key: key);
+
+  @override
+  _SearchFieldWidgetState createState() => _SearchFieldWidgetState();
+}
+
+class _SearchFieldWidgetState extends ConsumerState<SearchFieldWidget> {
+  final TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+    return SizedBox(
+      width: width * 0.50,
+      height: height * 0.05,
+      child: TextField(
+        controller: _textEditingController,
+        onSubmitted: (String input) {},
+        style: const TextStyle(color: Colors.white),
+        decoration: const InputDecoration(
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          prefixIcon: Icon(
+            Icons.search,
+            color: Colors.white24,
+          ),
+          hintStyle: TextStyle(color: Colors.white54),
+          filled: false,
+          fillColor: Colors.white24,
+          hintText: AppStrings.kSearch,
+        ),
+      ),
+    );
+  }
+}
+
+class CategorySelectionWidget extends StatefulWidget {
+  const CategorySelectionWidget({Key? key}) : super(key: key);
+
+  @override
+  _CategorySelectionWidgetState createState() =>
+      _CategorySelectionWidgetState();
+}
+
+class _CategorySelectionWidgetState extends State<CategorySelectionWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton(
+      dropdownColor: Colors.black38,
+      value: SearchCategory.popular,
+      icon: const Icon(
+        Icons.menu,
+        color: Colors.white24,
+      ),
+      underline: Container(
+        height: 1,
+        color: Colors.white24,
+      ),
+      onChanged: (value) {},
+      items: const [
+        DropdownMenuItem(
+          child: Text(
+            SearchCategory.popular,
+            style: TextStyle(color: Colors.white),
+          ),
+          value: SearchCategory.popular,
+        ),
+        DropdownMenuItem(
+          child: Text(
+            SearchCategory.upcoming,
+            style: TextStyle(color: Colors.white),
+          ),
+          value: SearchCategory.upcoming,
+        ),
+        DropdownMenuItem(
+          child: Text(
+            SearchCategory.none,
+            style: TextStyle(color: Colors.white),
+          ),
+          value: SearchCategory.none,
+        ),
+      ],
     );
   }
 }

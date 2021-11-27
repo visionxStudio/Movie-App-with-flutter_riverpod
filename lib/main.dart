@@ -7,7 +7,7 @@ import 'package:movieapp/src/routes/app_routes.gr.dart';
 import 'package:movieapp/src/common/constants/strings.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerStatefulWidget {
