@@ -3,9 +3,10 @@ import 'package:movieapp/src/common/constants/assets.dart';
 import 'package:movieapp/src/common/constants/strings.dart';
 
 class SplashPage extends StatefulWidget {
-  final VoidCallback onInitializationComplete;
-  const SplashPage({Key? key, required this.onInitializationComplete})
-      : super(key: key);
+  // final VoidCallback onInitializationComplete;
+  // const SplashPage({Key? key, required this.onInitializationComplete})
+  // : super(key: key);
+  const SplashPage({Key? key}) : super(key: key);
 
   @override
   State<SplashPage> createState() => _SplashPageState();
@@ -15,7 +16,10 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    widget.onInitializationComplete;
+    // widget.onInitializationComplete;
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      // Navigate to homepage
+    });
   }
 
   @override
