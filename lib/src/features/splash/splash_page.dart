@@ -8,6 +8,7 @@ import 'package:movieapp/src/common/constants/assets.dart';
 import 'package:movieapp/src/common/constants/strings.dart';
 import 'package:movieapp/src/models/app_config.dart';
 import 'package:movieapp/src/routes/app_routes.gr.dart';
+import 'package:movieapp/src/services/http_service.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -41,6 +42,7 @@ class _SplashPageState extends State<SplashPage> {
         baseImageApiUrl: configData["BASE_IMAGE_API_URL"],
       ),
     );
+    getIt.registerSingleton<HttpService>(HttpService());
   }
 
   @override
