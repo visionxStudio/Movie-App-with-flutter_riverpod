@@ -5,9 +5,6 @@ import 'package:movieapp/src/common/constants/strings.dart';
 import 'package:movieapp/src/routes/app_routes.gr.dart';
 
 class SplashPage extends StatefulWidget {
-  // final VoidCallback onInitializationComplete;
-  // const SplashPage({Key? key, required this.onInitializationComplete})
-  // : super(key: key);
   const SplashPage({Key? key}) : super(key: key);
 
   @override
@@ -18,7 +15,6 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    // widget.onInitializationComplete;
     Future.delayed(
       const Duration(milliseconds: 1500),
       () {
