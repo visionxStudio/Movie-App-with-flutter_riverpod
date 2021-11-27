@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movieapp/src/common/constants/strings.dart';
+import 'package:movieapp/src/models/movie.dart';
 import 'package:movieapp/src/models/search_categories.dart';
 
 class Homepage extends ConsumerWidget {
@@ -12,7 +13,7 @@ class Homepage extends ConsumerWidget {
     final double _height = MediaQuery.of(context).size.height;
     final double _width = MediaQuery.of(context).size.width;
     return Scaffold(
-      extendBody: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       body: SizedBox(
         height: _height,
@@ -20,10 +21,12 @@ class Homepage extends ConsumerWidget {
         child: Stack(
           children: [
             _backgroundWidget(height: _height, width: _width),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: _foregroundWidgets(height: _height, width: _width),
+            SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: _foregroundWidgets(height: _height, width: _width),
+              ),
             ),
           ],
         ),
@@ -68,6 +71,7 @@ class Homepage extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _topbarWidget(height: height, width: width),
+            MovieLists(),
           ],
         ),
       ),
@@ -184,6 +188,119 @@ class _CategorySelectionWidgetState extends State<CategorySelectionWidget> {
           value: SearchCategory.none,
         ),
       ],
+    );
+  }
+}
+
+class MovieLists extends StatelessWidget {
+  MovieLists({Key? key}) : super(key: key);
+  final List<Movie> _movies = [
+    Movie(
+      backdropPath:
+          'https://loyolamaroon.com/wp-content/uploads/2021/03/Godzilla-v-Kong.jpg',
+      discription:
+          "This is the best movie that you people will watch so please watch this movie and please enjoy alot.",
+      isAdult: false,
+      language: "En",
+      name: "Dummy name",
+      posterPath:
+          "https://loyolamaroon.com/wp-content/uploads/2021/03/Godzilla-v-Kong.jpg",
+      rating: 3,
+      releaseDate: "2022/10/23",
+    )
+  ];
+  @override
+  Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+    return Padding(
+      padding: const EdgeInsets.only(top: 32.0),
+      child: SizedBox(
+        height: height * 0.83 - 5,
+        width: double.infinity,
+        child: _movies.isNotEmpty
+            ? ListView.builder(
+                itemCount: _movies.length,
+                itemBuilder: (context, index) {
+                  final Movie movie = _movies[index];
+                  return GestureDetector(
+                    onTap: () {},
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.network(
+                            movie.posterPath,
+                            height: height * 0.25,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8.0,
+                        ),
+                        SizedBox(
+                          width: width * 0.5,
+                          height: height * 0.25,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        movie.name,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18.0,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${movie.language} ${movie.releaseDate}',
+                                        style: const TextStyle(
+                                          color: Colors.white70,
+                                          fontSize: 14.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    movie.rating.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 24.0,
+                              ),
+                              Text(
+                                movie.discription,
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.9),
+                                  fontSize: 16.0,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+              )
+            : const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              ),
+      ),
     );
   }
 }
