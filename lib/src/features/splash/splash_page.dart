@@ -1,6 +1,8 @@
+import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:flutter/material.dart';
 import 'package:movieapp/src/common/constants/assets.dart';
 import 'package:movieapp/src/common/constants/strings.dart';
+import 'package:movieapp/src/routes/app_routes.gr.dart';
 
 class SplashPage extends StatefulWidget {
   // final VoidCallback onInitializationComplete;
@@ -17,9 +19,13 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     // widget.onInitializationComplete;
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      // Navigate to homepage
-    });
+    Future.delayed(
+      const Duration(milliseconds: 1500),
+      () {
+        // Navigate to homepage
+        context.router.replace(const HomepageRoute());
+      },
+    );
   }
 
   @override

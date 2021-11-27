@@ -31,10 +31,6 @@ class _MyAppState extends ConsumerState<MyApp> {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // initialRoute: AppRoutes.root,
-      // routes: {
-      //   AppRoutes.root: (BuildContext context) => const Splash(),
-      // },
     );
   }
 }
