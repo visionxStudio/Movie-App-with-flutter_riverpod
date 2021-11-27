@@ -9,6 +9,7 @@ import 'package:movieapp/src/common/constants/strings.dart';
 import 'package:movieapp/src/models/app_config.dart';
 import 'package:movieapp/src/routes/app_routes.gr.dart';
 import 'package:movieapp/src/services/http_service.dart';
+import 'package:movieapp/src/services/movie_service.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -21,14 +22,15 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    _setup(context);
-    Future.delayed(
-      const Duration(milliseconds: 1500),
-      () {
-        // Navigate to homepage
-        context.router.replace(const HomepageRoute());
-      },
-    );
+    _setup(context).whenComplete(() {
+      Future.delayed(
+        const Duration(milliseconds: 1500),
+        () {
+          // Navigate to homepage
+          context.router.replace(const HomepageRoute());
+        },
+      );
+    });
   }
 
   Future<void> _setup(BuildContext context) async {
@@ -43,6 +45,7 @@ class _SplashPageState extends State<SplashPage> {
       ),
     );
     getIt.registerSingleton<HttpService>(HttpService());
+    getIt.registerSingleton<MovieService>(MovieService());
   }
 
   @override
@@ -92,8 +95,20 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
       body: FadeTransition(
         opacity: _animation,
         child: SafeArea(
-          child: Center(
-            child: Image.asset(ImageAsset.kLogo),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Spacer(),
+                Center(
+                  child: Image.asset(ImageAsset.kLogo),
+                ),
+                const Spacer(),
+                const CircularProgressIndicator(),
+                const SizedBox(height: 50.0)
+              ],
+            ),
           ),
         ),
       ),
